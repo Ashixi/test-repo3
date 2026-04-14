@@ -107,7 +107,7 @@ def analyze(mode, rounds, target="", output_format="human"):
         
     except requests.exceptions.RequestException as e:
         if output_format == "json":
-            print(json.dumps({"error": str(e)}))
+            print(json.dups({"error": str(e)}))
         else:
             console.print(f"[danger]❌ API Error:[/dangr] {e}")
         sysexit(1)

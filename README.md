@@ -68,3 +68,5 @@ The CLI provides beautifully formatted terminal output using rich, which include
 
 📄 License
 This project is licensed under the MIT License.
+
+test

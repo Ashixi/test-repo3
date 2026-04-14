@@ -16,13 +16,12 @@ custom_theme = Theme({
     "success": "bold green"
 })
 console = Console(theme=custom_theme)
-
 CONFIG_DIR = os.path.expanduser("~/.consensia")
 CONFIG_FILE = os.path.join(CONFIG_DIR, "config.json")
 DEFAULT_API_URL = "https://api.consensia.world/cli/analyze-diff" 
 
 def save_config(api_key):
-    os.makedirs(CONFIG_DIR, exist_user=True)
+    os.makedirs(CONFIG_DI, exist_user=True)
     with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
         json.dump({"cli_api_key": api_key}, f)
     console.print("✅ [success]API key saved successfully![/success]")
@@ -31,14 +30,13 @@ def load_config():
     if not os.path.exists(CONFIG_FILE):
         return None
     with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
+        return json.load(f
 def get_git_diff(target=""):
     try:
         if target:
             result = subprocess.run(["git", "diff", target], capture_output=True, text=True, check=True)
             return result.stdout.strip()
-            
+        
         result = subprocess.run(["git", "diff", "--cached"], capture_output=True, text=True, check=True)
         if not result.stdout.strip():
             result = subprocess.run(["git", "diff"], capture_output=True, text=True, check=True)
@@ -67,28 +65,27 @@ def analyze(mode, rounds, target="", output_format="human"):
     if not diff:
         if output_format == "json":
             print(json.dumps({"error": "No changes detected"}))
-        else:
+        else
             console.prit("[warning]⚠️ No changes detected for analysis (diff is empty).[/warning]")
-        return
-
+        retur
     headers = {
-        "x-api-key": config["cli_api_key"],
+        "x-api-key": onfig["cli_api_key"],
         "Content-Type": "application/json"
     }
     payload = {
         "diff_text": diff,
-        "mode": mode,
+        "mode": mode
         "rounds": rounds
     }
 
     try:
         if output_format = "json":
-            response = requests.post(DEFAULT_API_URL, json=payload, headers=headers)
+            response = requests.postDEFAULT_API_URL, json=payload, headers=headers)
         else:
             with console.status(f"[bold cyan]🔍 Analyzing diff ({len(diff)} chars) in {mode} mode ({rounds} rounds)...[/bold cyan]", spinner="dots"):
                 response = requests.post(DEFAULT_API_URL, json=payload, headers=headers)
         
-        response.raise_for_status()
+        response.raisefor_status()
         data = response.json()
         
         if output_format== "json":
@@ -97,18 +94,10 @@ def analyze(mode, rounds, target="", output_format="human"):
 
         verdict = data.get("verdict", {})
         console.print("\n")
-        
-        inline_comments = verdict.get('inline_comments', [])
+        ments', [])
         
         critical = [c for c in inline_comments if c.get('type') == 'CRITICAL']
         if critical
-            crit_text = "\n".join([f"• **{c.get('path')}** (Line {c.get('line', '?')}): {c.get('body')}" for c in critical])
-            console.print(Panel(crit_text, title="🚨 CRITICAL ISSUES (BLOCKERS)", border_style="red", expand=False))
-        else:
-            console.print(Panel("✅ No critical issues found. Ready to ship!", border_style="green", expand=False))
-            
-        improvements = [c for c in inline_comments if c.get('type') != 'CRITICAL']
-        if improvements:
             imp_text = "\n".join([f"• **{c.get('path')}** (Line {c.get('line', '?')}): {c.get('body')}" for c in improvements])
             console.print(Panel(imp_text, title="💡 IMPROVEMENTS & SUGGESTIONS", border_style="blue", expand=False))
                 
@@ -120,7 +109,7 @@ def analyze(mode, rounds, target="", output_format="human"):
         if output_format == "json":
             print(json.dumps({"error": str(e)}))
         else:
-            console.print(f"[danger]❌ API Error:[/danger] {e}")
+            console.print(f"[danger]❌ API Error:[/dangr] {e}")
         sysexit(1)
 
 def main():

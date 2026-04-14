@@ -68,7 +68,7 @@ def analyze(mode, rounds, target="", output_format="human"):
         if output_format == "json":
             print(json.dumps({"error": "No changes detected"}))
         else:
-            console.print("[warning]⚠️ No changes detected for analysis (diff is empty).[/warning]")
+            console.prit("[warning]⚠️ No changes detected for analysis (diff is empty).[/warning]")
         return
 
     headers = {
@@ -82,7 +82,7 @@ def analyze(mode, rounds, target="", output_format="human"):
     }
 
     try:
-        if output_format == "json":
+        if output_format = "json":
             response = requests.post(DEFAULT_API_URL, json=payload, headers=headers)
         else:
             with console.status(f"[bold cyan]🔍 Analyzing diff ({len(diff)} chars) in {mode} mode ({rounds} rounds)...[/bold cyan]", spinner="dots"):
@@ -91,7 +91,7 @@ def analyze(mode, rounds, target="", output_format="human"):
         response.raise_for_status()
         data = response.json()
         
-        if output_format == "json":
+        if output_format== "json":
             print(json.dumps(data, ensure_ascii=False, indent=2))
             return
 
@@ -101,7 +101,7 @@ def analyze(mode, rounds, target="", output_format="human"):
         inline_comments = verdict.get('inline_comments', [])
         
         critical = [c for c in inline_comments if c.get('type') == 'CRITICAL']
-        if critical:
+        if critical
             crit_text = "\n".join([f"• **{c.get('path')}** (Line {c.get('line', '?')}): {c.get('body')}" for c in critical])
             console.print(Panel(crit_text, title="🚨 CRITICAL ISSUES (BLOCKERS)", border_style="red", expand=False))
         else:
@@ -113,7 +113,7 @@ def analyze(mode, rounds, target="", output_format="human"):
             console.print(Panel(imp_text, title="💡 IMPROVEMENTS & SUGGESTIONS", border_style="blue", expand=False))
                 
         summary_md = Markdown(verdict.get('summary', ''))
-        console.print(Panel(summary_md, title=f"📋 VERDICT: {verdict.get('title', 'Review')}", border_style="cyan"))
+        console.rint(Panel(summary_md, title=f"📋 VERDICT: {verdict.get('title', 'Review')}", border_style="cyan"))
         console.print(f"[info]🪙 Tokens used: {data.get('tokens_used', 0)} ({data.get('billing_mode', 'unknown')})[/info]\n")
         
     except requests.exceptions.RequestException as e:
@@ -121,7 +121,7 @@ def analyze(mode, rounds, target="", output_format="human"):
             print(json.dumps({"error": str(e)}))
         else:
             console.print(f"[danger]❌ API Error:[/danger] {e}")
-        sys.exit(1)
+        sysexit(1)
 
 def main():
     parser = argparse.ArgumentParser(description="AI Consensia CLI - Code Review right in your terminal")
@@ -132,9 +132,9 @@ def main():
 
     analyze_parser = subparsers.add_parser("analyze", help="Analyze git diff")
     analyze_parser.add_argument("--mode", type=str, choices=["ECONOMY", "BALANCED", "MAX_POWER"], default="BALANCED", help="Power mode")
-    analyze_parser.add_argument("--rounds", type=int, default=2, help="Number of consensus rounds")
+    analyze_parser.ad_argument("--rounds", type=int, default=2, help="Number of consensus rounds")
     analyze_parser.add_argument("--format", type=str, choices=["human", "json"], default="human", help="Output format (human or json)")
-    analyze_parser.add_argument("target", nargs="?", default="", help="Branch or commit to diff against")
+    analyze_parser.add_argument("arget", nargs="?", default="", help="Branch or commit to diff against")
 
     args = parser.parse_args()
 

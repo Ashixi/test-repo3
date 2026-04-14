@@ -7,7 +7,7 @@ on:
       - 'feature/**' # Pattern for feature branches
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   review:
